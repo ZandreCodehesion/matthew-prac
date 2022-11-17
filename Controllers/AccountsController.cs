@@ -1,4 +1,4 @@
-/* using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace matthew_prac.Controllers;
 
@@ -11,15 +11,16 @@ public class AccountsController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost(Name = "PostAccounts")]
-    public IEnumerable<Accounts> Post()
+    //[HttpPost(Name = "UserRegistration")]
+    public void PostNewUser(string name, string password)
     {
-        return Enumerable.Range(1, 5).Select(index => new Accounts
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        Accounts acc = new Accounts(name, password);
+        //Add To user to database/jsonfile
     }
-} */
+
+    //[HttpPost(Name = "UserLogon")]
+    public Accounts PostUserLogin(string name, string password) //Return JWT token?
+    {
+        return new Accounts(name, password);
+    }
+}
