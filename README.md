@@ -216,3 +216,88 @@ with the following connection string:
 ```
 Server=127.0.0.1;Database=LibraryDb;MultipleActiveResultSets=true;User=sa;Password=P@ssword1
 ```
+
+
+
+#Task 3 Pseudocode
+Best way is to use an array and make use of modulo maths? %25
+
+Store characters in a Map [{"Character" : character, "Position" : PositionInAlphabet}] called Alphabet
+float time = 0.0;
+int distance = 0;
+int currentPosition = 0;
+int targetPosition = -1;
+
+
+string uinput = ReadInput
+
+for int i = 0; i < uinput.Length; i++
+    currentLetter = Get Character based on currentPosition;
+    Get targetPosition from Alphabet based on uinput[i];
+
+    if uInput[i] == currentLetter
+        time += 2.5;
+
+    dist = ((currentPosition + targetPosition) % (Highest of targetPos and currPos)) + 1;
+    time += dist*5;
+    dist = 0
+    currentPosition = targetPosition;
+    currentLetter = uInput[i]
+
+targetPosition = 0;
+dist = ((currentPosition + targetPosition) % (Highest of targetPos and currPos)) + 1;
+time += dist*5;
+
+return time;
+
+    
+
+
+
+The Idea is to implement the alphabet wheel as a circular linked list.
+Create class CLLNode:
+    string  character //Store the alphabet character in here
+    CLLNode next //Reference to the next element in the list
+    CLLNode prev //Reference to the previous element in the list
+    int distanceToHead //Store the distance to the head of the list
+    int distanceToTail //Store the distance to the tail of the list
+    SetNext(CLL Node)
+    SetPrev(CLLNode)
+
+Create CLL:
+    CLLNode head //Stores the head of the list
+    CLLNode tail //Stores the tail of the list
+    CLL(string[]) //Constuctor, takes in an array of strings. Constructor will loop through the array and add a new node as well as set the next and prev.
+    CalculateDistanceToHead()
+        int dist = 0;
+        CLLNode curr;
+        if CLL not empty
+            curr = head;
+            curr.distanceToHead = dist;
+
+            while curr is not tail
+                dist++;
+                curr.distanceToHead = dist;
+                curr = curr.next;
+
+            if curr is tail
+                curr.distanceToHead = dist+1;
+
+    CalculateDistanceToTail()
+        int dist = 0;
+        CLLNode curr;
+        if CLL not empty
+            curr = tail;
+            curr.distanceToTail = dist;
+
+            while curr is not head
+                dist++;
+                curr.distanceToTail = dist;
+                curr = curr.prev;
+
+            if curr is head
+                curr.distanceToTail = dist+1;
+    
+
+                
+
