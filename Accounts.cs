@@ -1,12 +1,19 @@
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace matthew_prac;
 
 public class Accounts
 {
-    private Guid uid;
+    [Key]
+    public Guid uid {get;set;}
+
     private string uname;
     private string pword;
+
+    private Accounts()
+    {
+
+    }
 
     public Accounts(string u, string p)
     {

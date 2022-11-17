@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using matthew_prac;
 
 namespace matthew_prac.Controllers;
 
@@ -6,6 +7,8 @@ namespace matthew_prac.Controllers;
 [Route("[controller]")]
 public class AccountsController : ControllerBase
 {
+    private readonly ILogger<AccountsController> _logger;
+
     public AccountsController(ILogger<AccountsController> logger)
     {
         _logger = logger;
@@ -16,6 +19,8 @@ public class AccountsController : ControllerBase
     {
         Accounts acc = new Accounts(name, password);
         //Add acc to user database
+        /* LibraryDB.Add(acc);
+        SaveChanges(); */
         //Void method returns Code 204
     }
 

@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,7 +13,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<LibraryDB>(options =>
-    options.UseSqlServer(builder.Configuration.GetDefaultConnection()));
+    {
+        options.UseSqlServer(
+           @"Server=127.0.0.1;Database=LibraryDb;MultipleActiveResultSets=true;User=sa;Password=P@ssword1;Encrypt=False",
+            b => b.MigrationsAssembly(typeof(Program).Assembly.FullName));
+    });
 
 var app = builder.Build();
 
