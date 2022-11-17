@@ -7,6 +7,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<LibraryDB>(options =>
+    options.UseSqlServer(builder.Configuration.GetDefaultConnection()));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,5 +24,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+/* app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}"); */
 
 app.Run();

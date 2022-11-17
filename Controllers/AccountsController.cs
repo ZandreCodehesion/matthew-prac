@@ -11,16 +11,17 @@ public class AccountsController : ControllerBase
         _logger = logger;
     }
 
-    //[HttpPost(Name = "UserRegistration")]
-    public void PostNewUser(string name, string password)
+    [HttpPost("UserRegistration/{username}/{password}")]
+    public void UserRegistration(string name, string password)
     {
         Accounts acc = new Accounts(name, password);
-        //Add To user to database/jsonfile
+        //Add acc to user database
+        //Void method returns Code 204
     }
 
-    //[HttpPost(Name = "UserLogon")]
-    public Accounts PostUserLogin(string name, string password) //Return JWT token?
+    /* [HttpPost("UserLogon/{username}/{password}")]
+    public Accounts UserLogin(string name, string password) //Return JWT
     {
         return new Accounts(name, password);
-    }
+    } */
 }

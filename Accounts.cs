@@ -1,4 +1,4 @@
-/* using System;
+using System;
 
 namespace matthew_prac;
 
@@ -15,7 +15,6 @@ public class Accounts
         Password = p;
     }
 
-    public string Username {get{return uname;}; set{uname = value;};};
-    public string Password {get{return pword;}; set{pword = value;};};
+    public string Username {get; set;}
+    public string Password {get; set;}
 }
- */
