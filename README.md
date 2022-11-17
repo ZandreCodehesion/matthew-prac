@@ -222,7 +222,7 @@ Server=127.0.0.1;Database=LibraryDb;MultipleActiveResultSets=true;User=sa;Passwo
 #Task 3 Pseudocode
 Best way is to use an array and make use of modulo maths? %25
 
-Store characters in a Map [{"Character" : character, "Position" : PositionInAlphabet}] called Alphabet
+Store characters in a JSON Array [{"Character" : character, "Position" : PositionInAlphabet}] called Alphabet
 float time = 0.0;
 int distance = 0;
 int currentPosition = 0;
