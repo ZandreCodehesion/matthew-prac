@@ -157,15 +157,44 @@ public class AuthorsController : ControllerBase
     }
 
     [HttpDelete(":id")]
-    public void DeleteAuthorByID(Guid id)
+    public async Task<ActionResult<string>> DeleteAuthorByID(Guid id)
     {
         try
         {
+            //Get ID of Current user and convert it to Guid
+            string tempId = GetCurrentUser();
 
+            if(tempId == "WhatEvenIsAToken?" || tempId == "NotLoggedIn")
+            {
+                return BadRequest("Bad Token");
+            }
+
+            Guid.TryParse(tempId, out Guid cUId);
+
+            //Get Author by id
+            Authors authById = await _context.Authors.FirstOrDefaultAsync<Authors>(o => o.AuthorId == id);
+            //Check who created the author
+            if(authById == null)
+            {
+                return BadRequest("Author Does Not Exist");
+            }
+
+            Guid authCreatorId = authById.CreatedBy;
+            //if creator id is same as current id: update author, else return error message
+            if(authCreatorId == cUId)
+            {
+                _context.Entry(authById).State = EntityState.Deleted;
+                _context.SaveChanges();
+                
+                return Ok("Author Deleted Successfully");
+            }
+
+            return BadRequest("You Did Not Create This Author");
         }
         catch(Exception e)
         {
             Console.WriteLine("Woops, Something Went Wrong: \n" + e.Message);
+            return BadRequest("Could Not Delete Author");
         }
     }
 
