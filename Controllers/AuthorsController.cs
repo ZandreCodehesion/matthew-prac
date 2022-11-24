@@ -104,15 +104,55 @@ public class AuthorsController : ControllerBase
     }
 
     [HttpPut(":id")]
-    public void UpdateAuthorByID(Guid id, [FromBody] AuthorsRq author)
+    public async Task<ActionResult<string>> UpdateAuthorByID(Guid id, [FromBody] AuthorsRq author)
     {
         try
         {
+            //Get ID of Current user and convert it to Guid
+            string tempId = GetCurrentUser();
+
+            if(tempId == "WhatEvenIsAToken?" || tempId == "NotLoggedIn")
+            {
+                return BadRequest("Bad Token");
+            }
+
+            if(author.AuthorName.IsNullOrEmpty() || author.ActiveFrom == null || author.ActiveTo == null)
+            {
+                return BadRequest("Incorrect Author Details");
+            }
+
+            Guid.TryParse(tempId, out Guid cUId);
+
+            //Get Author by id
+            Authors authById = await _context.Authors.FirstOrDefaultAsync<Authors>(o => o.AuthorId == id);
+            //Check who created the author
+            if(authById == null)
+            {
+                return BadRequest("Author Does Not Exist");
+            }
+
+            Guid authCreatorId = authById.CreatedBy;
+            //if creator id is same as current id: update author, else return error message
+            if(authCreatorId == cUId)
+            {
+                authById.AuthorName = author.AuthorName;
+                authById.ActiveFrom = author.ActiveFrom;
+                authById.ActiveTo = author.ActiveTo;
+                
+                _context.Entry(authById).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Ok("Author Updated");
+               
+            }
+
+            return BadRequest("You Did Not Create This Author");
 
         }
         catch(Exception e)
         {
             Console.WriteLine("Woops, Something Went Wrong: \n" + e.Message);
+            return BadRequest("Could Not Update Author");
         }
     }
 
