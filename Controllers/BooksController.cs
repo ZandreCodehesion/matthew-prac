@@ -38,23 +38,22 @@ public class BooksController : ControllerBase
 
             List<AllBooksRs> allBooks = new List<AllBooksRs>();
 
-            books.ForEach(async b => {
-                Authors author = await _context.Authors.FirstOrDefaultAsync<Authors>(o => o.AuthorId == b.Author);
+            books.ForEach(b => {
+                Authors author = _context.Authors.FirstOrDefault<Authors>(o => o.AuthorId == b.Author);
                 string authorName = "No Author";
                 bool hasAuthor = false;
 
                 if(author != null)
                 {
                     authorName = author.AuthorName;
-                }
-
-                if(authorName != "No Author")
-                {
                     hasAuthor = true;
                 }
 
                 allBooks.Add(new AllBooksRs(b.BookName, authorName, hasAuthor));
             });
+
+            Console.WriteLine("The values in allBooks are:\n======================");
+            allBooks.ForEach(a => Console.WriteLine(a.BookAuthorName + " - " + a.BookName));
 
             return Ok(allBooks);
         }
