@@ -31,7 +31,7 @@ public class BooksController : ControllerBase
         {
             List<Books> books = _context.Books.ToList<Books>();
 
-            if(books.Count == 0)
+            if(books == null || books.Count == 0)
             {
                 return NotFound("No Books In The Library");
             }
@@ -134,6 +134,38 @@ public class BooksController : ControllerBase
         {
             Console.WriteLine("Woops, Something Went Wrong: \n" + e.Message);
             return BadRequest("Could not get books by author id from library database");
+        }
+    }
+
+    [HttpPost("{authorId}")]
+    public async Task<ActionResult<string>> CreateBook(Guid authorId, [FromBody] BooksRq book)
+    {
+        try
+        {
+            if(authorId == null)
+            {
+                return BadRequest("Invalid Author ID");
+            }
+
+            string tempId = GetCurrentUser();
+
+            if(tempId == "WhatEvenIsAToken?" || tempId == "NotLoggedIn")
+            {
+                return BadRequest("Bad Token");
+            }
+
+            Guid.TryParse(tempId, out Guid cUId);
+
+            Books newBook = new Books(book.BookName, book.Publisher, book.DatePublished, book.CopiesSold, cUId, authorId); 
+            await _context.Books.AddAsync(newBook);
+            await _context.SaveChangesAsync();
+
+            return Ok("Book Added Successfully");
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine("Woops, Something Went Wrong: \n" + e.Message);
+            return BadRequest("Could Add Book To the Database");
         }
     }
 
