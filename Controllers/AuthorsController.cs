@@ -45,7 +45,7 @@ public class AuthorsController : ControllerBase
         }
     }
 
-    [HttpGet(":id")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<Authors>> GetAuthorByID(Guid id)
     {
         try
@@ -103,7 +103,7 @@ public class AuthorsController : ControllerBase
         }
     }
 
-    [HttpPut(":id")]
+    [HttpPut("{id}")]
     public async Task<ActionResult<string>> UpdateAuthorByID(Guid id, [FromBody] AuthorsRq author)
     {
         try
@@ -156,7 +156,7 @@ public class AuthorsController : ControllerBase
         }
     }
 
-    [HttpDelete(":id")]
+    [HttpDelete("{id}")]
     public async Task<ActionResult<string>> DeleteAuthorByID(Guid id)
     {
         try
