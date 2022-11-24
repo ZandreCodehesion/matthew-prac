@@ -10,5 +10,5 @@ public class LibraryDBContext : DbContext
     }
             
      public DbSet<Accounts> Accounts { get; set; }
-     //public DbSet<Author> Authors { get; set; }
+     public DbSet<Authors> Authors { get; set; }
 }
