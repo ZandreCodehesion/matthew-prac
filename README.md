@@ -216,3 +216,45 @@ with the following connection string:
 ```
 Server=127.0.0.1;Database=LibraryDb;MultipleActiveResultSets=true;User=sa;Password=P@ssword1
 ```
+
+Problem Solver Task PseudoCode:
+===============================
+```
+Map<string, int> alphabetWheel = new Map<string, int>();
+
+Populate the alphabetWheel with the alphabet character and its position in the alphabet minus 1
+
+string input = Get input String
+
+int forwardDistance = 0;
+int backwardDistance = 0;
+
+int targetPos = 0;
+int currentPos = 0;
+string currentLetter = 'A';
+
+float time = 0.0;
+
+For each character c in input
+    targetPos = The position parameter corresponding to the map entry of c
+
+    if(currentLetter == c)
+    {
+        time += 2.5;
+    }
+    else
+    {
+        forwardDistance = Absolute Value of targetPos - currentPos;
+        backwardDistance = (Absolute value of 0 - currentPos) + (Absolute Value of 25 - targetPos);
+
+        time += (forwardDistance < backwardDistance) ? forwardDistance * 5 : backwardDistance * 5;
+
+        forwardDistance = 0;
+        backwardDistance = 0;
+
+        currentLetter = c;
+        currentPos = targetPos;
+    }
+
+    return time;
+```
