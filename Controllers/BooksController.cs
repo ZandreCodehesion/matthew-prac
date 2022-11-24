@@ -96,7 +96,7 @@ public class BooksController : ControllerBase
         }
     }
     
-    [HttpGet("{authId}/{bookId}")]
+    [HttpGet("{authorId}/{bookId}")]
     public async Task<ActionResult<List<AllBooksByAuthorBookRs>>> GetBooksByAuthorIdAndBookId([FromRoute] Guid authId, [FromRoute] Guid bookId)
     {
         try
