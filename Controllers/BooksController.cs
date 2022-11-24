@@ -96,19 +96,20 @@ public class BooksController : ControllerBase
         }
     }
     
-    [HttpGet("{authorId}/{bookId}")]
-    public async Task<ActionResult<List<AllBooksByAuthorBookRs>>> GetBooksByAuthorIdAndBookId(Guid authId, Guid bookId)
+    [HttpGet("{authId}/{bookId}")]
+    public async Task<ActionResult<List<AllBooksByAuthorBookRs>>> GetBooksByAuthorIdAndBookId([FromRoute] Guid authId, [FromRoute] Guid bookId)
     {
         try
         {
+            Console.WriteLine("AuthorId and Book Id\n=======================\n" + authId + " - " + bookId);
             if(authId == null || bookId == null)
             {
-                return BadRequest("Invalid Author ID");
+                return BadRequest("Invalid Author ID Or Book Id");
             }
 
             List<Books> books = await _context.Books.Where<Books>(o => o.Author == authId && o.BookId == bookId).ToListAsync<Books>(); 
 
-            if(books == null || books.Count == 0)
+            if(books == null || books.Count() == 0)
             {
                 return NotFound("The Book Does Not Exist");
             }      
