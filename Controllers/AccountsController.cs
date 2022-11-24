@@ -46,15 +46,18 @@ public class AccountsController : ControllerBase
     [HttpPost("register")]
     public async Task<StatusCodeResult> Register([FromBody] AccountsRq user)
     {
-        //Console.WriteLine("Register User Details:\n=======================\nName: " + user.Name + "\nPassword: " + user.Password);
-
         try
         {
             if(!String.IsNullOrWhiteSpace(user.Name) || user.Name != "")
             {
-                Accounts acc = new Accounts(user.Name, user.Password);
+                Accounts testUserName = await _context.Accounts.SingleOrDefaultAsync<Accounts>(a => a.UserName == user.Name);
 
-                //Console.WriteLine("Account Details To Be Added:\n=============================\nUser ID: " + acc.UserId + "\nUser Name: " + acc.UserName + "\nPassword: " + acc.Password);
+                if(testUserName != null)
+                {
+                    return new StatusCodeResult(400);
+                }
+
+                Accounts acc = new Accounts(user.Name, user.Password);
 
                 await _context.Accounts.AddAsync(acc);
                 await _context.SaveChangesAsync();
@@ -66,9 +69,9 @@ public class AccountsController : ControllerBase
                 return new StatusCodeResult(400);
             }
         }
-        catch/* (Exception e) */ 
+        catch(Exception e)
         {
-            //Console.WriteLine("Something went wrong: \n" + e.Message);
+            Console.WriteLine("Something went wrong: \n" + e.Message);
             return new StatusCodeResult(500);
         }
     }
